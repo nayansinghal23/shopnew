@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import { RegisterSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaDiscord, FaGithub } from "react-icons/fa";
@@ -13,6 +13,7 @@ import { z } from "zod";
 
 const RegisterPage = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -27,21 +28,19 @@ const RegisterPage = () => {
     },
   });
   const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
     setLoading(true);
     setError("");
-    setSuccess("");
     registerAction(values)
       .then((data: any) => {
         setLoading(false);
         if (data?.error) {
           setError(data?.error);
         }
-        if (data?.success) {
-          setSuccess(data?.success);
+        if (data?.success && data?.token) {
+          router.push(`/auth/verify-token?token=${data?.token}`);
         }
         reset();
       })
@@ -108,7 +107,6 @@ const RegisterPage = () => {
           </button>
         </form>
         {error && <p className="text-red-500">{error}</p>}
-        {success && <p className="text-green-500">{success}</p>}
         <Link href="/auth/login" className="text-sm font-semibold underline">
           Already have an account
         </Link>

@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import { LoginSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaDiscord, FaGithub } from "react-icons/fa";
@@ -13,6 +13,7 @@ import { z } from "zod";
 
 const LoginPage = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -37,6 +38,9 @@ const LoginPage = () => {
         setLoading(false);
         if (data?.error) {
           setError(data?.error);
+        }
+        if (data?.token) {
+          router.push(`/auth/verify-token?token=${data?.token}`);
         }
         if (data?.success) {
           setError(data?.success);

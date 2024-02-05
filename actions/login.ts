@@ -1,7 +1,10 @@
 "use server";
 import { signIn } from "@/auth";
+import { getUserByEmail } from "@/data/user";
+import { generateVerificationToken } from "@/lib/token";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { LoginSchema } from "@/schemas";
+import { compare } from "bcryptjs";
 import { AuthError } from "next-auth";
 import { z } from "zod";
 
@@ -14,14 +17,29 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
   }
   try {
     const { email, password } = validateFields.data;
+    const user = await getUserByEmail(email);
+    if (!user || !user.password) {
+      return {
+        error: "Email doesn't exists!",
+      };
+    }
+    const hashedPassword = await compare(password, user.password);
+    if (!hashedPassword) {
+      return {
+        error: "Password dodn't match!",
+      };
+    }
+    if (!user.emailVerified) {
+      const verificationToken = await generateVerificationToken(email);
+      return {
+        token: verificationToken.token,
+      };
+    }
     await signIn("credentials", {
       email,
       password,
       redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
-    return {
-      success: "Successfully Logged In!",
-    };
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
