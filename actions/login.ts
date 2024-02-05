@@ -34,3 +34,9 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
     throw error;
   }
 };
+
+export const oAuth = async (type: "github" | "discord" | "google") => {
+  await signIn(type, {
+    redirectTo: DEFAULT_LOGIN_REDIRECT,
+  });
+};

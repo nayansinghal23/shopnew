@@ -1,8 +1,10 @@
+import { oAuth } from "@/actions/login";
+
 interface ButtonProps {
   text: string;
   isOuth?: boolean;
   icon?: any;
-  type?: "button" | "submit" | "reset";
+  type: "github" | "discord" | "google";
 }
 
 const Button = ({ text, isOuth, icon, type }: ButtonProps) => {
@@ -13,7 +15,9 @@ const Button = ({ text, isOuth, icon, type }: ButtonProps) => {
           ? "border border-black hover:bg-slate-200"
           : "bg-blue-500 hover:bg-blue-700 text-white"
       } font-bold py-2 px-4 rounded-full`}
-      type={type}
+      onClick={async () => {
+        await oAuth(type);
+      }}
     >
       {isOuth && icon}
       {text}
