@@ -26,7 +26,7 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
     const hashedPassword = await compare(password, user.password);
     if (!hashedPassword) {
       return {
-        error: "Password dodn't match!",
+        error: "Password didn't match!",
       };
     }
     if (!user.emailVerified) {

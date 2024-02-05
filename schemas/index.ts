@@ -18,3 +18,12 @@ export const LoginSchema = z.object({
     message: "Password must be at least 1 digit",
   }),
 });
+
+export const ForgotPasswordSchema = z.object({
+  email: z.string().email({
+    message: "Enter correct email-id",
+  }),
+  newPassword: z.string().min(6, {
+    message: "Password must be at least 6 digit",
+  }),
+});
