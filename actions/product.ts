@@ -45,3 +45,18 @@ export const getProductsSortedByPrice = async (
   }
   return products.slice(from, till);
 };
+
+export const getProductsByCategories = async (
+  category: string,
+  skip: number = 0,
+  limit: number = 100
+) => {
+  const api = `https://dummyjson.com/products?skip=${skip}&limit=${limit}`;
+  const response = await axios.get(api);
+  const data = await response.data;
+  const products = data?.products;
+  const filteredProducts = products.filter(
+    (product: any) => product.category === category
+  );
+  return filteredProducts;
+};

@@ -1,7 +1,11 @@
+import { getProductsByCategories } from "@/actions/product";
 import { categories } from "@/constants";
+import { setFilteredProducts } from "@/redux/productSlice";
+import { useAppDispatch } from "@/redux/store";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 const HorizontalScrollBar = () => {
+  const dispatch = useAppDispatch();
   const slideLeft = () => {
     let slider: any = document.getElementById("slider");
     slider.scrollLeft = slider?.scrollLeft - 500;
@@ -12,8 +16,9 @@ const HorizontalScrollBar = () => {
     slider.scrollLeft = slider?.scrollLeft + 500;
   };
 
-  const handleClick = (item: string) => {
-    console.log(item);
+  const handleClick = async (item: string) => {
+    const filteredProducts = await getProductsByCategories(item);
+    dispatch(setFilteredProducts(filteredProducts));
   };
 
   return (
