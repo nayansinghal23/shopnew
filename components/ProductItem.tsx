@@ -1,20 +1,12 @@
+import { Product } from "@/interface/types";
 import Image from "next/image";
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  thumbnail: string;
-  images: String[];
-}
 
 interface ProductProps {
   product: Product;
 }
 
 const ProductItem = ({
-  product: { id, title, description, price, thumbnail },
+  product: { id, title, description, price, thumbnail, rating },
 }: ProductProps) => {
   return (
     <div className="p-2 border-2 border-black rounded-md bg-[#FCEEC0] text-black flex flex-col items-center gap-2">
@@ -27,7 +19,10 @@ const ProductItem = ({
       />
       <p className="text-[15px] sm:text-[18px] font-semibold">{title}</p>
       <p>{description}</p>
-      <p className="font-semibold">Price : {price}Rs</p>
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-5">
+        <p className="font-semibold">Price : {price}Rs</p>
+        <p className="font-semibold">Rating : {rating}</p>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 "use client";
+import HorizontalScrollBar from "@/components/HorizontalScrollBar";
 import Navbar from "@/components/Navbar";
 import Products from "@/components/Products";
 import { store } from "@/redux/store";
@@ -9,6 +10,7 @@ export default function Home() {
     <Provider store={store}>
       <div className="flex flex-col h-full min-h-screen gap-[1px]">
         <Navbar />
+        <HorizontalScrollBar />
         <Products />
       </div>
     </Provider>

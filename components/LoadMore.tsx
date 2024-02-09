@@ -4,15 +4,7 @@ import { useInView } from "react-intersection-observer";
 import Spinner from "./Spinner";
 import { getAllProducts } from "@/actions/product";
 import ProductItem from "./ProductItem";
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  thumbnail: string;
-  images: String[];
-}
+import { Product } from "@/interface/types";
 
 const LoadMore = () => {
   const [products, setProducts] = useState<Product[]>([]);

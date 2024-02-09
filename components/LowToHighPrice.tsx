@@ -3,15 +3,7 @@ import { useEffect, useState } from "react";
 import ProductItem from "./ProductItem";
 import Spinner from "./Spinner";
 import { useInView } from "react-intersection-observer";
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  thumbnail: string;
-  images: String[];
-}
+import { Product } from "@/interface/types";
 
 const LowToHighPrice = () => {
   const { ref, inView } = useInView();

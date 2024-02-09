@@ -1,4 +1,5 @@
 "use client";
+import { list } from "@/constants";
 import { setSortBy } from "@/redux/sortBySlice";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { signOut } from "next-auth/react";
@@ -12,12 +13,11 @@ const Navbar = () => {
   const sortBy: string = useAppSelector(
     (state: any) => state?.dropdown?.sortBy
   );
-  const list: string[] = ["Low to High Price", "High to Low Price"];
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hamburgerOpen, setHamburgerOpen] = useState<boolean>(false);
 
   return (
-    <nav className="bg-gray-900 border-gray-700 flex p-3 justify-between sm:justify-start sm:gap-20 items-center">
+    <nav className="bg-gray-900 border-gray-700 flex p-3 justify-between sm:justify-start sm:gap-20 items-center z-30">
       <Link href="/" className="text-white font-semibold sm:pl-10">
         ShopNew
       </Link>
@@ -87,7 +87,7 @@ const Navbar = () => {
           {sortBy}
         </button>
         {isOpen && (
-          <div className="absolute top-[2.5rem] flex flex-col items-start w-full gap-[1px]">
+          <div className="absolute top-[2.5rem] flex flex-col items-start w-full gap-[1px] z-40">
             {list.map((item: string, index: number) => (
               <p
                 key={index}
