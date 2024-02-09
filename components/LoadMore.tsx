@@ -16,7 +16,7 @@ interface Product {
 
 const LoadMore = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [skip, setSkip] = useState<number>(10);
+  const [skip, setSkip] = useState<number>(0);
 
   const { ref, inView } = useInView();
 

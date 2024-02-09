@@ -1,4 +1,6 @@
 "use client";
+import { setSortBy } from "@/redux/sortBySlice";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
@@ -6,10 +8,13 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
 
 const Navbar = () => {
+  const dispatch = useAppDispatch();
+  const sortBy: string = useAppSelector(
+    (state: any) => state?.dropdown?.sortBy
+  );
   const list: string[] = ["Low to High Price", "High to Low Price"];
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hamburgerOpen, setHamburgerOpen] = useState<boolean>(false);
-  const [sortBy, setSortBy] = useState<string>("Dropdown");
 
   return (
     <nav className="bg-gray-900 border-gray-700 flex p-3 justify-between sm:justify-start sm:gap-20 items-center">
@@ -53,7 +58,7 @@ const Navbar = () => {
                       className="bg-blue-400 rounded-lg p-2 w-full border border-black font-semibold hover:cursor-pointer"
                       onClick={() => {
                         setIsOpen((prev) => !prev);
-                        setSortBy(item);
+                        dispatch(setSortBy(item));
                         setHamburgerOpen(false);
                       }}
                     >
@@ -89,7 +94,7 @@ const Navbar = () => {
                 className="bg-blue-400 rounded-lg p-2 w-full border border-black font-semibold hover:cursor-pointer"
                 onClick={() => {
                   setIsOpen((prev) => !prev);
-                  setSortBy(item);
+                  dispatch(setSortBy(item));
                 }}
               >
                 {item}

@@ -1,25 +1,29 @@
-import { getAllProducts } from "@/actions/product";
-import ProductItem from "./ProductItem";
+import { useAppSelector } from "@/redux/store";
 import LoadMore from "./LoadMore";
+import LowToHighPrice from "./LowToHighPrice";
+import HighToLowPrice from "./HighToLowPrice";
 
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  thumbnail: string;
-  images: String[];
-}
+const Products = () => {
+  const sortBy: string = useAppSelector(
+    (state: any) => state?.dropdown?.sortBy
+  );
 
-const Products = async () => {
-  const products: Product[] = await getAllProducts(0);
-
+  if (sortBy === "Dropdown") {
+    return (
+      <div className="flex flex-col gap-2 overflow-x-hidden">
+        <LoadMore />
+      </div>
+    );
+  } else if (sortBy === "Low to High Price") {
+    return (
+      <div className="flex flex-col gap-2 overflow-x-hidden">
+        <LowToHighPrice />
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col gap-2 overflow-x-hidden">
-      {products?.map((product: Product) => (
-        <ProductItem key={product.id} product={product} />
-      ))}
-      <LoadMore />
+      <HighToLowPrice />
     </div>
   );
 };
