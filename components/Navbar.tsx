@@ -1,6 +1,6 @@
 "use client";
 import { list } from "@/constants";
-import { setFilteredProducts } from "@/redux/productSlice";
+import { setFilteredProducts, setSelectedProduct } from "@/redux/productSlice";
 import { setSortBy } from "@/redux/sortBySlice";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { signOut } from "next-auth/react";
@@ -61,6 +61,7 @@ const Navbar = () => {
                         setIsOpen((prev) => !prev);
                         dispatch(setSortBy(item));
                         dispatch(setFilteredProducts([]));
+                        dispatch(setSelectedProduct(""));
                         setHamburgerOpen(false);
                       }}
                     >
@@ -98,6 +99,7 @@ const Navbar = () => {
                   setIsOpen((prev) => !prev);
                   dispatch(setSortBy(item));
                   dispatch(setFilteredProducts([]));
+                  dispatch(setSelectedProduct(""));
                 }}
               >
                 {item}

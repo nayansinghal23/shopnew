@@ -4,10 +4,12 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface IProduct {
   filteredProducts: Product[];
+  selectedProduct: string;
 }
 
 const initialState: IProduct = {
   filteredProducts: [],
+  selectedProduct: "",
 };
 
 export const productSlice = createSlice({
@@ -17,8 +19,11 @@ export const productSlice = createSlice({
     setFilteredProducts: (state, action: PayloadAction<Product[]>) => {
       state.filteredProducts = action.payload;
     },
+    setSelectedProduct: (state, action: PayloadAction<string>) => {
+      state.selectedProduct = action.payload;
+    },
   },
 });
 
-export const { setFilteredProducts } = productSlice.actions;
+export const { setFilteredProducts, setSelectedProduct } = productSlice.actions;
 export const productReducer = productSlice.reducer;
