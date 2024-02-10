@@ -1,11 +1,15 @@
 "use client";
+import { getCartItems } from "@/actions/cart";
 import { list } from "@/constants";
+import { Product } from "@/interface/types";
+import { setCartProducts } from "@/redux/cartSlice";
 import { setFilteredProducts, setSelectedProduct } from "@/redux/productSlice";
 import { setSortBy } from "@/redux/sortBySlice";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { FaShoppingCart } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
 
@@ -14,8 +18,22 @@ const Navbar = () => {
   const sortBy: string = useAppSelector(
     (state: any) => state?.dropdown?.sortBy
   );
+  const cartProducts: Product[] = useAppSelector(
+    (state: any) => state?.cart?.cartProducts
+  );
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hamburgerOpen, setHamburgerOpen] = useState<boolean>(false);
+
+  const addCartItems = async () => {
+    const cartItems = await getCartItems();
+    dispatch(setCartProducts(cartItems));
+  };
+
+  useEffect(() => {
+    // Make this fetch server-side
+    // link cartProducts model to user in prisma.schema
+    addCartItems();
+  }, []);
 
   return (
     <nav className="bg-gray-900 border-gray-700 flex p-3 justify-between sm:justify-start sm:gap-20 items-center z-30">
@@ -36,14 +54,20 @@ const Navbar = () => {
         )}
         {hamburgerOpen && (
           <div className="absolute top-10 left-0 bg-gray-900 border-gray-700 flex flex-col items-center p-3 gap-2 w-full">
-            <button
-              className="text-red-700 w-max font-semibold hover:cursor-pointer"
-              onClick={() => {
-                signOut();
-              }}
-            >
-              Logout
-            </button>
+            <div className="flex justify-between w-full items-center">
+              <button
+                className="text-red-700 w-max font-semibold hover:cursor-pointer"
+                onClick={() => {
+                  signOut();
+                }}
+              >
+                Logout
+              </button>
+              <div className="flex gap-3 items-center justify-between">
+                <FaShoppingCart color="white" />
+                <p className="text-white">{cartProducts.length}</p>
+              </div>
+            </div>
             <div className="relative flex flex-col items-center w-[200px] rounded-lg">
               <button
                 onClick={() => setIsOpen((prev) => !prev)}
@@ -74,14 +98,20 @@ const Navbar = () => {
           </div>
         )}
       </div>
-      <button
-        className="hidden sm:block text-red-700 font-semibold hover:cursor-pointer"
-        onClick={() => {
-          signOut();
-        }}
-      >
-        Logout
-      </button>
+      <div className="hidden sm:flex gap-20 items-center">
+        <button
+          className="text-red-700 w-max font-semibold hover:cursor-pointer"
+          onClick={() => {
+            signOut();
+          }}
+        >
+          Logout
+        </button>
+        <div className="flex gap-3 items-center justify-between">
+          <FaShoppingCart color="white" />
+          <p className="text-white">{cartProducts.length}</p>
+        </div>
+      </div>
       <div className="hidden sm:flex relative flex-col items-center w-[200px] rounded-lg">
         <button
           onClick={() => setIsOpen((prev) => !prev)}

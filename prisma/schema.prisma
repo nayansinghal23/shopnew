@@ -48,3 +48,17 @@ model VerificationToken {
 
   @@unique([email, token])
 }
+
+model CartProduct {
+  id          String   @id @default(cuid())
+  itemId      Int      @unique
+  title       String
+  description String
+  price       Int
+  thumbnail   String
+  rating      Int
+  brand       String
+  category    String
+  images      String[] @default([])
+  present     Int      @default(0)
+}
