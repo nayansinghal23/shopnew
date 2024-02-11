@@ -14,7 +14,7 @@ const ProductItem = ({ product }: ProductProps) => {
   const handleAddCartFunctionality = async () => {
     await addCartItem(product);
     toast.success("Item added successfully!");
-    const cartItems = await getCartItems();
+    const cartItems: any = await getCartItems();
     dispatch(setCartProducts(cartItems));
   };
 
@@ -25,7 +25,7 @@ const ProductItem = ({ product }: ProductProps) => {
       return;
     }
     toast.success("Item removed successfully!");
-    const cartItems = await getCartItems();
+    const cartItems: any = await getCartItems();
     dispatch(setCartProducts(cartItems));
   };
 

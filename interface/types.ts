@@ -12,6 +12,7 @@ export interface Product {
 
 export interface CartProduct {
   id: string;
+  userId: string;
   itemId: number;
   title: string;
   description: string;

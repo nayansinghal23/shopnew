@@ -25,13 +25,12 @@ const Navbar = () => {
   const [hamburgerOpen, setHamburgerOpen] = useState<boolean>(false);
 
   const addCartItems = async () => {
-    const cartItems = await getCartItems();
+    const cartItems: any = await getCartItems();
     dispatch(setCartProducts(cartItems));
   };
 
   useEffect(() => {
     // Make this fetch server-side
-    // link cartProducts model to user in prisma.schema
     addCartItems();
   }, []);
 

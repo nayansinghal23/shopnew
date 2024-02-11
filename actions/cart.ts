@@ -1,17 +1,27 @@
 "use server";
+import { auth } from "@/auth";
 import { Product } from "@/interface/types";
 import { prismadb } from "@/lib/db";
 
 export const addCartItem = async (product: Product) => {
-  const existingItem = await prismadb.cartProduct.findUnique({
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) {
+    return null;
+  }
+  const existingItems = await prismadb.cartProduct.findMany({
     where: {
       itemId: product.id,
     },
   });
+  const existingItem = existingItems.filter(
+    (item) => item.userId === userId
+  )[0];
   if (existingItem) {
     await prismadb.cartProduct.update({
       where: {
         itemId: existingItem.itemId,
+        userId,
       },
       data: {
         present: existingItem.present + 1,
@@ -20,6 +30,7 @@ export const addCartItem = async (product: Product) => {
   } else {
     await prismadb.cartProduct.create({
       data: {
+        userId,
         itemId: product.id,
         title: product.title,
         description: product.description,
@@ -35,8 +46,14 @@ export const addCartItem = async (product: Product) => {
 };
 
 export const deleteCartItem = async (product: Product) => {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) {
+    return null;
+  }
   const existingItem = await prismadb.cartProduct.findUnique({
     where: {
+      userId,
       itemId: product.id,
     },
   });
@@ -46,12 +63,14 @@ export const deleteCartItem = async (product: Product) => {
   if (existingItem.present === 1) {
     await prismadb.cartProduct.delete({
       where: {
+        userId,
         itemId: existingItem.itemId,
       },
     });
   } else {
     await prismadb.cartProduct.update({
       where: {
+        userId,
         itemId: existingItem.itemId,
       },
       data: {
@@ -62,6 +81,15 @@ export const deleteCartItem = async (product: Product) => {
 };
 
 export const getCartItems = async () => {
-  const cartItems = await prismadb.cartProduct.findMany({});
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) {
+    return null;
+  }
+  const cartItems = await prismadb.cartProduct.findMany({
+    where: {
+      userId,
+    },
+  });
   return cartItems;
 };
