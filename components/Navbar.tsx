@@ -30,7 +30,6 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    // Make this fetch server-side
     addCartItems();
   }, []);
 

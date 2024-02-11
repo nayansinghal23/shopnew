@@ -9,19 +9,21 @@ export const addCartItem = async (product: Product) => {
   if (!userId) {
     return null;
   }
-  const existingItems = await prismadb.cartProduct.findMany({
+  const existingItem = await prismadb.cartProduct.findUnique({
     where: {
-      itemId: product.id,
+      userId_itemId: {
+        userId,
+        itemId: product.id,
+      },
     },
   });
-  const existingItem = existingItems.filter(
-    (item) => item.userId === userId
-  )[0];
   if (existingItem) {
     await prismadb.cartProduct.update({
       where: {
-        itemId: existingItem.itemId,
-        userId,
+        userId_itemId: {
+          itemId: existingItem.itemId,
+          userId,
+        },
       },
       data: {
         present: existingItem.present + 1,
@@ -53,8 +55,10 @@ export const deleteCartItem = async (product: Product) => {
   }
   const existingItem = await prismadb.cartProduct.findUnique({
     where: {
-      userId,
-      itemId: product.id,
+      userId_itemId: {
+        userId,
+        itemId: product.id,
+      },
     },
   });
   if (!existingItem || existingItem?.present === 0) {
@@ -63,15 +67,19 @@ export const deleteCartItem = async (product: Product) => {
   if (existingItem.present === 1) {
     await prismadb.cartProduct.delete({
       where: {
-        userId,
-        itemId: existingItem.itemId,
+        userId_itemId: {
+          userId,
+          itemId: existingItem.itemId,
+        },
       },
     });
   } else {
     await prismadb.cartProduct.update({
       where: {
-        userId,
-        itemId: existingItem.itemId,
+        userId_itemId: {
+          userId,
+          itemId: existingItem.itemId,
+        },
       },
       data: {
         present: existingItem.present - 1,
