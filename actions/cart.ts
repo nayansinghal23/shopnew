@@ -1,6 +1,6 @@
 "use server";
 import { auth } from "@/auth";
-import { Product } from "@/interface/types";
+import { CartProduct, Product } from "@/interface/types";
 import { prismadb } from "@/lib/db";
 
 export const addCartItem = async (product: Product) => {
@@ -100,4 +100,20 @@ export const getCartItems = async () => {
     },
   });
   return cartItems;
+};
+
+export const clearCartProduct = async (product: CartProduct) => {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) return null;
+
+  const deletedProduct = await prismadb.cartProduct.delete({
+    where: {
+      userId_itemId: {
+        userId,
+        itemId: product.itemId,
+      },
+    },
+  });
+  return deletedProduct;
 };

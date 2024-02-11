@@ -61,10 +61,13 @@ const Navbar = () => {
               >
                 Logout
               </button>
-              <div className="flex gap-3 items-center justify-between">
+              <Link
+                className="flex gap-3 items-center justify-between"
+                href="/cart"
+              >
                 <FaShoppingCart color="white" />
                 <p className="text-white">{cartProducts.length}</p>
-              </div>
+              </Link>
             </div>
             <div className="relative flex flex-col items-center w-[200px] rounded-lg">
               <button
@@ -105,10 +108,10 @@ const Navbar = () => {
         >
           Logout
         </button>
-        <div className="flex gap-3 items-center justify-between">
+        <Link className="flex gap-3 items-center justify-between" href="/cart">
           <FaShoppingCart color="white" />
           <p className="text-white">{cartProducts.length}</p>
-        </div>
+        </Link>
       </div>
       <div className="hidden sm:flex relative flex-col items-center w-[200px] rounded-lg">
         <button
