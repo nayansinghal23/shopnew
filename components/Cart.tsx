@@ -49,22 +49,25 @@ const Cart = () => {
   }, []);
 
   return (
-    <div>
-      <div className="flex justify-between p-3 bg-gray-900">
+    <div className="relative">
+      <div className="fixed top-0 z-30 w-full flex justify-between items-center p-3 bg-gray-900">
         <Link href="/" className="font-semibold text-white">
           Home
         </Link>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-md disabled:opacity-50">
+          Pay
+        </button>
         <Link href="/cart" className="flex gap-2 items-center text-white">
           <FaShoppingCart />
           {cartProducts.length}
         </Link>
       </div>
       {cartProducts.length === 0 ? (
-        <div className="flex justify-center items-center p-4 col-span-1 sm:col-span-2 md:col-span-3">
+        <div className="mt-16 flex justify-center items-center p-4 col-span-1 sm:col-span-2 md:col-span-3">
           <Spinner />
         </div>
       ) : (
-        <div className="flex flex-col gap-2 mt-[1px]">
+        <div className="flex flex-col gap-2 mt-16">
           {cartProducts.map((item: CartProduct) => (
             <div
               key={item.id}

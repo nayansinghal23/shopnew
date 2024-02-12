@@ -3,6 +3,7 @@ import { Product } from "@/interface/types";
 import { setCartProducts } from "@/redux/cartSlice";
 import { useAppDispatch } from "@/redux/store";
 import Image from "next/image";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 interface ProductProps {
@@ -11,55 +12,75 @@ interface ProductProps {
 
 const ProductItem = ({ product }: ProductProps) => {
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState<boolean>(false);
   const handleAddCartFunctionality = async () => {
+    setLoading(true);
+    toast.loading("Adding...", {
+      duration: 3000,
+    });
     await addCartItem(product);
-    toast.success("Item added successfully!");
     const cartItems: any = await getCartItems();
     dispatch(setCartProducts(cartItems));
+    toast.success("Item added successfully!");
+    setLoading(false);
   };
 
   const handleDeleteCartFunctionality = async () => {
+    setLoading(true);
+    toast.loading("Deleting...", {
+      duration: 3000,
+    });
     const response = await deleteCartItem(product);
     if (response === null) {
+      setLoading(false);
       toast.error("Item doesnot exist in cart!");
       return;
     }
-    toast.success("Item removed successfully!");
     const cartItems: any = await getCartItems();
     dispatch(setCartProducts(cartItems));
+    toast.success("Item removed successfully!");
+    setLoading(false);
   };
 
   return (
     <div className="p-2 border-2 border-black rounded-md bg-[#FCEEC0] text-black flex flex-col items-center gap-2">
-      <Image
-        src={product.thumbnail}
-        alt={`item${product.id}`}
-        width={100}
-        height={100}
-        className="w-auto h-auto"
-      />
-      <p className="text-[15px] sm:text-[18px] font-semibold">
-        {product.title}
-      </p>
-      <p>{product.description}</p>
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-5 items-center">
-        <p className="font-semibold">Price : {product.price}Rs</p>
-        <p className="font-semibold">Rating : {product.rating}</p>
+      <div className="flex justify-between items-center w-full sm:flex-col">
+        <div className="">
+          <Image
+            src={product.thumbnail}
+            alt={`item${product.id}`}
+            width={100}
+            height={100}
+            className="w-auto h-auto"
+          />
+        </div>
+        <div className="flex items-center flex-col">
+          <p className="text-[15px] sm:text-[18px] font-semibold">
+            {product.title}
+          </p>
+          <p className="hidden sm:block">{product.description}</p>
+          <p className="font-semibold">Price : {product.price}Rs</p>
+          <p className="font-semibold">Rating : {product.rating}</p>
+        </div>
+      </div>
+      <div className="flex w-full justify-between items-center">
         <button
-          className="font-semibold border border-black p-2 rounded-lg"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full disabled:opacity-45"
           onClick={() => {
             handleAddCartFunctionality();
           }}
+          disabled={loading}
         >
           Add
         </button>
         <button
-          className="font-semibold border border-black p-2 rounded-lg"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full disabled:opacity-50"
           onClick={() => {
             handleDeleteCartFunctionality();
           }}
+          disabled={loading}
         >
-          Remove
+          Delete
         </button>
       </div>
     </div>
