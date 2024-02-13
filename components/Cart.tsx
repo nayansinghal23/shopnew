@@ -1,16 +1,10 @@
-import {
-  addCartItem,
-  clearCartProduct,
-  deleteCartItem,
-  getCartItems,
-} from "@/actions/cart";
+import { clearCartProduct, getCartItems } from "@/actions/cart";
 import { CartProduct } from "@/interface/types";
 import { setCartProducts } from "@/redux/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
-import Spinner from "./Spinner";
 import Image from "next/image";
 import { MdOutlineCancel } from "react-icons/md";
 import toast from "react-hot-toast";
