@@ -100,7 +100,7 @@ const LoginPage = () => {
         {error && <p className="text-red-500">{error}</p>}
         {success && <p className="text-green-500">{success}</p>}
         <Link href="/auth/register" className="text-sm font-semibold underline">
-          Don't have an account
+          Do not have an account
         </Link>
         <Link
           href="/auth/forgot-password"
