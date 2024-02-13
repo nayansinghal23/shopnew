@@ -24,7 +24,7 @@ const Cart = () => {
   const handleClearItem = async (item: CartProduct) => {
     setLoading(true);
     toast.loading("Deleting may take some time!", {
-      duration: 3000,
+      duration: 500,
     });
     const deletedProduct: any = await clearCartProduct(item);
     if (!deletedProduct) {

@@ -16,7 +16,7 @@ const ProductItem = ({ product }: ProductProps) => {
   const handleAddCartFunctionality = async () => {
     setLoading(true);
     toast.loading("Adding...", {
-      duration: 3000,
+      duration: 500,
     });
     await addCartItem(product);
     const cartItems: any = await getCartItems();
@@ -28,7 +28,7 @@ const ProductItem = ({ product }: ProductProps) => {
   const handleDeleteCartFunctionality = async () => {
     setLoading(true);
     toast.loading("Deleting...", {
-      duration: 3000,
+      duration: 500,
     });
     const response = await deleteCartItem(product);
     if (response === null) {
