@@ -64,7 +64,7 @@ const Cart = () => {
       </div>
       {cartProducts.length === 0 ? (
         <div className="mt-16 flex justify-center items-center p-4 col-span-1 sm:col-span-2 md:col-span-3">
-          <Spinner />
+          <p className="font-semibold">Cart is Empty</p>
         </div>
       ) : (
         <div className="flex flex-col gap-2 mt-16">
