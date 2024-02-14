@@ -1,3 +1,4 @@
+"use client";
 import { clearCartProduct, getCartItems } from "@/actions/cart";
 import { CartProduct } from "@/interface/types";
 import { setCartProducts } from "@/redux/cartSlice";
@@ -8,8 +9,11 @@ import { FaShoppingCart } from "react-icons/fa";
 import Image from "next/image";
 import { MdOutlineCancel } from "react-icons/md";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const Cart = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const cartProducts: CartProduct[] = useAppSelector(
     (state: any) => state?.cart?.cartProducts
@@ -38,6 +42,27 @@ const Cart = () => {
     setLoading(false);
   };
 
+  const handlePayment = async () => {
+    setLoading(true);
+    try {
+      const price: number = cartProducts.reduce(
+        (acc: number, curr: CartProduct) => acc + curr.present * curr.price,
+        0
+      );
+      const response = await axios.post("/api/payment", {
+        price,
+      });
+      setLoading(false);
+      const data: any = await response.data;
+      if (data?.url) {
+        router.push(data?.url);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     addCartItems();
   }, []);
@@ -48,7 +73,11 @@ const Cart = () => {
         <Link href="/" className="font-semibold text-white">
           Home
         </Link>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-md disabled:opacity-50">
+        <button
+          onClick={handlePayment}
+          disabled={loading}
+          className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-md disabled:opacity-50"
+        >
           Pay
         </button>
         <Link href="/cart" className="flex gap-2 items-center text-white">
