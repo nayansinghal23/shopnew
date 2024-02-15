@@ -3,16 +3,24 @@ import HorizontalScrollBar from "@/components/HorizontalScrollBar";
 import Navbar from "@/components/Navbar";
 import Products from "@/components/Products";
 import { store } from "@/redux/store";
+import { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
 import { Provider } from "react-redux";
 
-export default function Home() {
+interface Props {
+  session: Session | null;
+}
+
+export default function Home({ session }: Props) {
   return (
-    <Provider store={store}>
-      <div className="flex flex-col h-full min-h-screen gap-[1px]">
-        <Navbar />
-        <HorizontalScrollBar />
-        <Products />
-      </div>
-    </Provider>
+    <SessionProvider session={session}>
+      <Provider store={store}>
+        <div className="flex flex-col h-full min-h-screen gap-[1px]">
+          <Navbar />
+          <HorizontalScrollBar />
+          <Products />
+        </div>
+      </Provider>
+    </SessionProvider>
   );
 }
