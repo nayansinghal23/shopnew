@@ -27,3 +27,7 @@ export const ForgotPasswordSchema = z.object({
     message: "Password must be at least 6 digit",
   }),
 });
+
+export const UpdateUsernameSchema = z.object({
+  username: z.string(),
+});
