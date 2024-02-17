@@ -11,9 +11,11 @@ import { z } from "zod";
 
 const UpdateProfilePhotoPage = () => {
   const router = useRouter();
-  const { register, handleSubmit } = useForm<
-    z.infer<typeof UpdateProfilePhotoSchema>
-  >({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof UpdateProfilePhotoSchema>>({
     resolver: zodResolver(UpdateProfilePhotoSchema),
     defaultValues: {
       image: "",
@@ -68,6 +70,9 @@ const UpdateProfilePhotoPage = () => {
             disabled={loading}
             {...register("image")}
           />
+          {errors.image && (
+            <p className="text-red-500">{errors.image?.message as string}</p>
+          )}
           <button
             disabled={loading}
             type="submit"
