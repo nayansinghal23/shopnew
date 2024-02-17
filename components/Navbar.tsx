@@ -14,7 +14,6 @@ import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 
 const Navbar = () => {
   const user = useCurrentUser();
-  console.log("user", user);
   const dispatch = useAppDispatch();
   const cartProducts: Product[] = useAppSelector(
     (state: any) => state?.cart?.cartProducts
@@ -59,7 +58,7 @@ const Navbar = () => {
         <div className="absolute top-10 right-2 bg-gray-800 z-20 rounded-md w-40 flex flex-col gap-2 p-3">
           <Link
             className="flex gap-3 items-center justify-between"
-            href={`/user/${user?.id}`}
+            href={user?.id ? `/user/${user?.id}` : "/"}
           >
             <p className="text-white">My Profile</p>
           </Link>

@@ -40,3 +40,35 @@ export const updateUsername = async (
     success: "Username updated!",
   };
 };
+
+export const updateProfilePhoto = async (data: string) => {
+  if (!data) {
+    return {
+      error: "Something went wrong!",
+    };
+  }
+  const session = await auth();
+  const email = session?.user?.email;
+  if (!email) {
+    return {
+      error: "User not loggedin!",
+    };
+  }
+  const existingUser = await getUserByEmail(email);
+  if (!existingUser) {
+    return {
+      error: "Email not found!",
+    };
+  }
+  await prismadb.user.update({
+    where: {
+      id: existingUser.id,
+    },
+    data: {
+      image: data,
+    },
+  });
+  return {
+    success: "Image Updated!",
+  };
+};

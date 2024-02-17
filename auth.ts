@@ -42,6 +42,12 @@ export const {
       if (session.user && token.OAuth) {
         session.user.OAuth = token.OAuth;
       }
+      if (session.user && token.name) {
+        session.user.name = token.name;
+      }
+      if (session.user && token.image) {
+        session.user.image = token.image;
+      }
       return session;
     },
     async jwt({ token }: any) {
@@ -50,6 +56,8 @@ export const {
       if (!user) return token;
       const existingAccount = await getAccountByUserId(user.id);
       token.id = user.id;
+      token.name = user.name;
+      token.image = user.image;
       token.OAuth = existingAccount === null ? "false" : "true";
       return token;
     },
